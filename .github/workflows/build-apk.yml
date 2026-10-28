@@ -1,3 +1,4 @@
+
 name: Build Jayno Yar APK
 
 on:
@@ -23,17 +24,21 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-          cache: gradle
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
 
-      - name: Set up Gradle 9.3.1
+      - name: Install Android SDK platform
+        run: |
+          sdkmanager --install "platforms;android-36.1"
+
+      - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '9.3.1'
 
       - name: Generate debug keystore
+        working-directory: jayno-yar-github-upload
         run: |
           keytool -genkeypair \
             -keystore debug.keystore \
@@ -46,12 +51,13 @@ jobs:
             -validity 10000
 
       - name: Build debug APK
-        run: gradle assembleDebug
+        working-directory: jayno-yar-github-upload
+        run: gradle --no-daemon :app:assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: jayno-yar-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: jayno-yar-github-upload/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 7
