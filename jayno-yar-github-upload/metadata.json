@@ -1,6 +1,0 @@
-{
-  "name": "جاینو یار",
-  "description": "سامانه جامع مدیریت تردد، ساعات کار، اضافه‌کار و مرخصی کارگاه مبلمان جاینو",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
